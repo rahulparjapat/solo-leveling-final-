@@ -4,953 +4,338 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#1a1a2e">
-    <meta name="description" content="SSC Solo Leveling - Professional Study Tracker">
-    <title>SSC Solo Leveling</title>
+    <title>SSC Solo Leveling - Optimized</title>
     <style>
-        /* ===== CSS VARIABLES & RESET ===== */
         :root {
-            --bg-primary: #0d0d14;
-            --bg-secondary: #1a1a2e;
-            --bg-tertiary: #252540;
-            --bg-card: #16162a;
-            --text-primary: #e8e8f0;
-            --text-secondary: #a0a0b8;
-            --text-muted: #6a6a80;
-            --accent-blue: #4a9eff;
-            --accent-green: #4ade80;
-            --accent-yellow: #fbbf24;
-            --accent-red: #ef4444;
-            --accent-purple: #a78bfa;
-            --border-color: #2a2a45;
-            --shadow: 0 4px 20px rgba(0,0,0,0.4);
-            --radius: 12px;
-            --radius-sm: 8px;
-            --transition: 200ms ease;
-            --font-stack: 'Inter', system-ui, sans-serif;
+            --bg-primary: #0d0d14; --bg-secondary: #1a1a2e; --bg-tertiary: #252540; --bg-card: #16162a;
+            --text-primary: #e8e8f0; --text-secondary: #a0a0b8;
+            --accent-blue: #4a9eff; --accent-green: #4ade80; --accent-yellow: #fbbf24; --accent-red: #ef4444;
+            --border-color: #2a2a45; --radius: 12px;
         }
-
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { font-size: 16px; scroll-behavior: smooth; }
-        body {
-            font-family: var(--font-stack);
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* ===== UTILITIES ===== */
-        .hidden { display: none !important; }
-        .flex { display: flex; }
-        .flex-col { flex-direction: column; }
-        .gap-2 { gap: 8px; }
-        .gap-3 { gap: 12px; }
-        .mb-2 { margin-bottom: 8px; }
-        .mb-4 { margin-bottom: 16px; }
-        .text-center { text-align: center; }
-        .text-muted { color: var(--text-muted); }
-        .text-sm { font-size: 0.85rem; }
-        .text-xs { font-size: 0.75rem; }
-        .font-bold { font-weight: 700; }
-        .xp-color { color: var(--accent-blue); }
-        .gold-color { color: var(--accent-yellow); }
-        .danger-color { color: var(--accent-red); }
-
-        /* ===== ANIMATIONS ===== */
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
-
-        /* ===== LAYOUT ===== */
-        .app-container { max-width: 600px; margin: 0 auto; min-height: 100vh; padding-bottom: 80px; }
-        .header { background: var(--bg-secondary); padding: 16px 20px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
-        
-        /* ===== COMPONENTS ===== */
-        .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; animation: slideUp 300ms ease forwards; }
-        
-        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; border: none; border-radius: var(--radius-sm); font-weight: 500; cursor: pointer; font-family: inherit; width: 100%; transition: var(--transition); }
-        .btn:active { transform: scale(0.97); }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; }
+        .app-container { max-width: 600px; margin: 0 auto; min-height: 100vh; padding: 20px; padding-bottom: 100px; }
+        .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; transition: 0.2s; font-family: inherit; }
+        .btn:active { transform: scale(0.98); }
         .btn-primary { background: var(--accent-blue); color: white; }
-        .btn-secondary { background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border-color); }
         .btn-success { background: var(--accent-green); color: #0d0d14; }
-        .btn-danger { background: var(--accent-red); color: white; }
-        .btn-sm { padding: 8px 16px; font-size: 0.8rem; width: auto; }
-
-        .form-group { margin-bottom: 16px; }
-        .form-label { display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 6px; }
-        .form-input, .form-select, .form-textarea { width: 100%; padding: 12px; background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: var(--text-primary); font-family: inherit; }
-        .form-input:focus { outline: none; border-color: var(--accent-blue); }
-
-        .progress-container { margin: 10px 0; }
-        .progress-bar { height: 8px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden; }
-        .progress-fill { height: 100%; background: var(--accent-blue); width: 0%; transition: width 0.5s ease; }
-
-        /* ===== SPECIFIC UI ===== */
-        .rank-badge { width: 60px; height: 60px; border-radius: 50%; background: var(--bg-tertiary); border: 3px solid var(--accent-blue); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 700; margin-right: 15px; }
-        
-        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
+        .btn-secondary { background: var(--bg-tertiary); color: white; border: 1px solid var(--border-color); }
+        .hidden { display: none !important; }
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 16px; }
         .stat-card { background: var(--bg-card); padding: 12px; border-radius: var(--radius); text-align: center; border: 1px solid var(--border-color); }
-        
+        .progress-bar { height: 8px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden; margin: 8px 0; }
+        .progress-fill { height: 100%; background: var(--accent-blue); width: 0%; transition: width 0.5s ease; }
         .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-secondary); border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; padding: 10px; z-index: 100; max-width: 600px; margin: 0 auto; }
-        .nav-item { background: none; border: none; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; font-size: 0.7rem; cursor: pointer; }
+        .nav-item { background: none; border: none; color: var(--text-secondary); display: flex; flex-direction: column; align-items: center; font-size: 0.7rem; cursor: pointer; }
         .nav-item.active { color: var(--accent-blue); }
-        .nav-item svg { width: 24px; height: 24px; margin-bottom: 4px; }
-
-        .page { display: none; padding: 20px; animation: fadeIn 300ms ease; }
-        .page.active { display: block; }
-
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 200; padding: 20px; }
-        .modal-overlay.active { display: flex; }
-        .modal { background: var(--bg-secondary); width: 100%; max-width: 450px; border-radius: var(--radius); max-height: 90vh; overflow-y: auto; border: 1px solid var(--border-color); }
-        .modal-header { padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
-        .modal-body { padding: 16px; }
-
-        .camera-box { background: black; width: 100%; aspect-ratio: 4/3; position: relative; border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 12px; }
-        .camera-box video, .camera-box img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); padding: 12px 20px; border-radius: 8px; background: var(--bg-secondary); border: 1px solid var(--border-color); z-index: 300; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
-        .toast.visible { opacity: 1; }
-        .toast.error { border-color: var(--accent-red); }
-        .toast.success { border-color: var(--accent-green); }
-
-        .phase-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px; }
-        .phase-opt { padding: 12px; background: var(--bg-tertiary); border: 2px solid transparent; border-radius: 8px; text-align: center; cursor: pointer; }
-        .phase-opt.selected { border-color: var(--accent-blue); background: rgba(74, 158, 255, 0.1); }
-
-        /* Random Prompt Overlay */
-        .random-prompt { position: absolute; inset: 0; background: rgba(239, 68, 68, 0.8); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; z-index: 10; display: none; }
+        .camera-box { background: black; width: 100%; aspect-ratio: 4/3; position: relative; border-radius: 8px; overflow: hidden; margin-bottom: 12px; }
+        video, .captured-img { width: 100%; height: 100%; object-fit: cover; }
+        .form-input, .form-select, .form-textarea { width: 100%; padding: 12px; background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: 8px; color: white; margin-bottom: 12px; font-family: inherit; }
+        .rank-badge { width: 50px; height: 50px; border-radius: 50%; background: var(--bg-tertiary); border: 2px solid var(--accent-blue); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; }
+        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); padding: 12px 20px; border-radius: 8px; background: var(--bg-secondary); border: 1px solid var(--border-color); z-index: 1000; opacity: 0; transition: 0.3s; pointer-events: none; }
+        .toast.show { opacity: 1; }
     </style>
 </head>
 <body>
 
     <div id="toast" class="toast"></div>
 
-    <div id="onboarding" class="app-container" style="display: flex; flex-direction: column; justify-content: center; text-align: center;">
-        <h1 style="font-size: 2.5rem; margin-bottom: 10px;">SSC Solo Leveling</h1>
-        <p class="text-muted mb-4">Strict. Verified. Unforgiving.</p>
-        <div class="card">
-            <h3>Select Exam Target</h3>
-            <div class="form-group" style="margin-top: 20px;">
-                <select id="examSelect" class="form-select">
-                    <option value="CGL">CGL (Graduate Level)</option>
-                    <option value="CHSL">CHSL (Higher Secondary)</option>
-                    <option value="MTS">MTS (Multi Tasking)</option>
-                </select>
-            </div>
-            <button class="btn btn-primary" onclick="initApp()">Initialize System</button>
-        </div>
-    </div>
-
-    <div id="mainApp" class="hidden">
-        <header class="header">
-            <div>
-                <div class="font-bold">SSC Solo Leveling</div>
-                <div class="text-xs text-muted" id="headerExam">CGL</div>
-            </div>
-            <div style="text-align: right;">
-                <div class="xp-color font-bold" id="headerXP">0 XP</div>
-                <div class="gold-color text-xs" id="headerGold">0 Gold</div>
-            </div>
-        </header>
-
+    <div id="mainApp">
         <div class="app-container">
-            <div id="pageDashboard" class="page active">
-                <div class="card flex" style="align-items: center;">
+            <div id="pageDashboard" class="page">
+                <div class="card flex" style="display:flex; align-items:center; gap:15px;">
                     <div class="rank-badge" id="dashRank">E</div>
                     <div>
                         <h2 id="dashLevel">Level 1</h2>
-                        <div class="text-xs text-muted" id="dashTitle">Beginner</div>
+                        <div id="dashWeeklyXP" style="font-size: 0.8rem; color: var(--text-secondary);">Weekly: 0 / 800</div>
                     </div>
                 </div>
 
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="text-xs text-muted">Weekly XP</div>
-                        <div class="font-bold" id="dashWeeklyXP">0 / 800</div>
+                        <div style="font-size: 0.7rem; color: var(--text-secondary);">GOLD</div>
+                        <div id="dashGold" style="color: var(--accent-yellow); font-weight: bold;">0</div>
                     </div>
                     <div class="stat-card">
-                        <div class="text-xs text-muted">Streak</div>
-                        <div class="font-bold" id="dashStreak">0 Days</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="text-xs text-muted">Failures</div>
-                        <div class="font-bold danger-color" id="dashFailures">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="text-xs text-muted">Status</div>
-                        <div class="font-bold" id="dashStatus">Normal</div>
+                        <div style="font-size: 0.7rem; color: var(--text-secondary);">STREAK</div>
+                        <div id="dashStreak" style="font-weight: bold;">0 Days</div>
                     </div>
                 </div>
 
                 <div class="card">
-                    <div class="flex" style="justify-content: space-between; margin-bottom: 5px;">
-                        <span class="text-sm">Level Progress</span>
-                        <span class="text-sm text-muted" id="xpText">0 / 100</span>
+                    <div style="display:flex; justify-content:space-between; font-size: 0.8rem;">
+                        <span>Level Progress</span>
+                        <span id="xpText">0 / 100</span>
                     </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="xpBar"></div>
-                    </div>
-                </div>
-
-                <div class="card" style="border-color: var(--accent-purple);">
-                    <h3 class="xp-color text-sm mb-2">📜 Daily Random Quest</h3>
-                    <p class="font-bold" id="dailyQuestText">Loading...</p>
-                    <div class="text-xs text-muted mt-2" id="dailyQuestReward">Reward: 30 XP</div>
-                </div>
-
-                <button class="btn btn-primary mb-2" onclick="navTo('study')">⚔️ Start Verified Study</button>
-            </div>
-
-            <div id="pageStudy" class="page">
-                <h2 class="mb-4">Verified Study</h2>
-
-                <div id="studyStep1" class="card">
-                    <h3 class="mb-4">Step 1: Intent</h3>
-                    <div class="form-group">
-                        <label class="form-label">Subject</label>
-                        <select id="studySubject" class="form-select">
-                            <option value="Quant">Quantitative Aptitude</option>
-                            <option value="English">English</option>
-                            <option value="Reasoning">Reasoning</option>
-                            <option value="GA">General Awareness</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Topic</label>
-                        <input type="text" id="studyTopic" class="form-input" placeholder="e.g. Percentage">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Phase</label>
-                        <div class="phase-grid">
-                            <div class="phase-opt selected" onclick="selectPhase(this, 'Learning')" data-rate="20">Learning<br><span class="text-xs">20 XP/hr</span></div>
-                            <div class="phase-opt" onclick="selectPhase(this, 'Revision')" data-rate="15">Revision<br><span class="text-xs">15 XP/hr</span></div>
-                            <div class="phase-opt" onclick="selectPhase(this, 'Analysis')" data-rate="25">Analysis<br><span class="text-xs">25 XP/hr</span></div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Target Duration (Min 10m)</label>
-                        <input type="number" id="studyDuration" class="form-input" placeholder="Minutes" min="10">
-                    </div>
-                    <button class="btn btn-primary" onclick="startTimer()">Start Timer</button>
-                </div>
-
-                <div id="studyStep2" class="card hidden text-center">
-                    <h3 class="mb-2">Session Active</h3>
-                    <div class="text-muted mb-4" id="activeTopicDisplay"></div>
-                    <div style="font-size: 3rem; font-weight: bold; font-family: monospace; margin: 20px 0;" id="timerDisplay">00:00</div>
-                    <p class="text-xs text-muted mb-4">Do not close this app. Focus.</p>
-                    <button class="btn btn-success" onclick="stopTimer()">Complete Session</button>
-                </div>
-
-                <div id="studyStep3" class="card hidden">
-                    <h3 class="mb-4">Step 3: Verification</h3>
-                    
-                    <div id="cameraSection">
-                        <div class="camera-box">
-                            <video id="cameraFeed" autoplay playsinline></video>
-                            <img id="photoPreview" class="hidden">
-                            <div id="randomPromptOverlay" class="random-prompt">
-                                <h3 style="color: white; margin-bottom: 10px;">⚠️ RANDOM CHECK</h3>
-                                <p style="color: white; font-size: 0.9rem;">Security Audit Triggered.<br>Take a photo of your notes with <strong>2 fingers visible</strong>.</p>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary mb-2" id="captureBtn" onclick="capturePhoto()">📸 Capture Live Photo</button>
-                        <button class="btn btn-secondary mb-2 hidden" id="retakeBtn" onclick="retakePhoto()">Retake</button>
-                    </div>
-
-                    <div id="affirmationSection" class="hidden">
-                        <div class="form-group">
-                            <label class="form-label danger-color">⚠️ Camera Unavailable Fallback</label>
-                            <p class="text-xs text-muted mb-2">Using affirmation halves Gold reward. Max 3 times/week.</p>
-                            <textarea id="affirmationText" class="form-textarea" placeholder="I solemnly affirm that I have studied honestly..." rows="3"></textarea>
-                            <div class="text-xs text-muted text-right"><span id="charCount">0</span>/50 chars</div>
-                        </div>
-                    </div>
-
-                    <div class="text-center mt-2">
-                        <button class="text-xs" style="background:none; border:none; color: var(--text-muted); text-decoration: underline;" onclick="toggleAffirmation()">Camera not working?</button>
-                    </div>
-
-                    <hr style="border-color: var(--border-color); margin: 20px 0;">
-
-                    <div class="form-group">
-                        <label class="form-label">Written Notes (Summary)</label>
-                        <textarea id="studyNotes" class="form-textarea" rows="2"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Key Reflection (One takeaway)</label>
-                        <input type="text" id="studyReflection" class="form-input">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Confidence</label>
-                        <input type="range" id="studyConfidence" min="1" max="10" value="5" style="width: 100%">
-                        <div class="flex" style="justify-content: space-between; font-size: 0.7rem;">
-                            <span>Weak</span>
-                            <span>Strong</span>
-                        </div>
-                    </div>
-
-                    <button class="btn btn-success" onclick="submitSession()">Submit Verification</button>
-                </div>
-            </div>
-
-            <div id="pageMocks" class="page">
-                <h2 class="mb-4">Mocks & Protection</h2>
-                
-                <div class="card" style="border-left: 4px solid var(--accent-blue);">
-                    <h3>Sectional Mock</h3>
-                    <p class="text-xs text-muted mb-2">Min 18 mins. Partial Protection.</p>
-                    <button class="btn btn-secondary btn-sm" onclick="openMockModal('Sectional')">Log Sectional</button>
+                    <div class="progress-bar"><div id="xpBar" class="progress-fill"></div></div>
                 </div>
 
                 <div class="card" style="border-left: 4px solid var(--accent-yellow);">
-                    <h3>Full Mock (Boss)</h3>
-                    <p class="text-xs text-muted mb-2">Full Duration. Full Protection (1 Day).</p>
-                    <button class="btn btn-secondary btn-sm" onclick="openMockModal('Full')">Log Full Mock</button>
+                    <div style="font-size: 0.7rem; color: var(--accent-yellow); font-weight: bold; margin-bottom: 4px;">DAILY QUEST</div>
+                    <div id="questText">Study any subject for 30 mins</div>
                 </div>
 
-                <div class="mb-4">
-                    <h3>History</h3>
-                    <div id="mockHistoryList"></div>
+                <button class="btn btn-primary" onclick="showPage('study')">⚔️ ENTER GATE (STUDY)</button>
+            </div>
+
+            <div id="pageStudy" class="page hidden">
+                <div id="studyStep1">
+                    <h3>Study Intent</h3>
+                    <label style="font-size: 0.8rem; color: var(--text-secondary);">Subject</label>
+                    <select id="studySubject" class="form-select">
+                        <option value="Quant">Quantitative Aptitude</option>
+                        <option value="English">English Language</option>
+                        <option value="Reasoning">General Intelligence</option>
+                        <option value="GA">General Awareness</option>
+                    </select>
+                    <label style="font-size: 0.8rem; color: var(--text-secondary);">Target (Min 10m)</label>
+                    <input type="number" id="studyTarget" class="form-input" placeholder="Minutes">
+                    <button class="btn btn-primary" onclick="startTimer()">Start Session</button>
+                </div>
+
+                <div id="studyStep2" class="hidden text-center">
+                    <div id="timerDisplay" style="font-size: 4rem; font-weight: bold; margin: 30px 0; font-family: monospace;">00:00</div>
+                    <p style="color: var(--text-secondary); margin-bottom: 20px;">Focus on the task. The system is watching.</p>
+                    <button class="btn btn-success" onclick="stopTimer()">Finish Session</button>
+                </div>
+
+                <div id="studyStep3" class="hidden">
+                    <h3>Verification Required</h3>
+                    <div class="camera-box">
+                        <video id="video" autoplay playsinline></video>
+                        <img id="photoPreview" class="captured-img hidden">
+                    </div>
+                    <button class="btn btn-primary" id="captureBtn" onclick="takePhoto()" style="margin-bottom:10px;">📸 Take Photo of Notes</button>
+                    <textarea id="studyNote" class="form-textarea" placeholder="Summary of what you learned (Min 20 chars)..."></textarea>
+                    <button class="btn btn-success" onclick="submitVerification()">Verify & Submit</button>
                 </div>
             </div>
 
-            <div id="pageProfile" class="page">
-                <h2 class="mb-4">Hunter Profile</h2>
-                <div class="card">
-                    <div class="flex" style="justify-content: space-between; margin-bottom: 10px;">
-                        <span>Total XP</span>
-                        <span class="xp-color" id="profileXP">0</span>
-                    </div>
-                    <div class="flex" style="justify-content: space-between; margin-bottom: 10px;">
-                        <span>Level</span>
-                        <span id="profileLevel">1</span>
-                    </div>
-                    <div class="flex" style="justify-content: space-between; margin-bottom: 10px;">
-                        <span>Rank</span>
-                        <span id="profileRank">E</span>
-                    </div>
-                    <div class="flex" style="justify-content: space-between; margin-bottom: 10px;">
-                        <span>Next Cap</span>
-                        <span id="profileCap">800 XP</span>
-                    </div>
-                    <div class="flex" style="justify-content: space-between;">
-                        <span>XP Multiplier</span>
-                        <span class="gold-color" id="profileMulti">1.0x</span>
-                    </div>
-                </div>
-
-                <h3>Session Log</h3>
-                <div id="sessionLog"></div>
+            <div id="pageProfile" class="page hidden">
+                <h3>Hunter Profile</h3>
+                <div id="historyLog" style="margin-top: 15px;"></div>
+                <button class="btn btn-secondary" onclick="exportData()" style="margin-top: 20px;">Download Progress Data</button>
             </div>
         </div>
 
         <nav class="nav-bar">
-            <button class="nav-item active" onclick="navTo('dashboard')" id="nav-dashboard">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path></svg>
-                Home
-            </button>
-            <button class="nav-item" onclick="navTo('study')" id="nav-study">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12,6 12,12 16,14"></polyline></svg>
-                Study
-            </button>
-            <button class="nav-item" onclick="navTo('mocks')" id="nav-mocks">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon></svg>
-                Mocks
-            </button>
-            <button class="nav-item" onclick="navTo('profile')" id="nav-profile">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                Profile
-            </button>
+            <button class="nav-item active" id="nav-dashboard" onclick="showPage('dashboard')">Home</button>
+            <button class="nav-item" id="nav-study" onclick="showPage('study')">Study</button>
+            <button class="nav-item" id="nav-profile" onclick="showPage('profile')">Profile</button>
         </nav>
     </div>
 
-    <div id="mockModal" class="modal-overlay">
-        <div class="modal">
-            <div class="modal-header">
-                <h3 id="mockModalTitle">Log Mock</h3>
-                <button onclick="closeModal('mockModal')" style="background:none; border:none; color:white; font-size: 1.5rem;">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label class="form-label">Subject/Name</label>
-                    <input type="text" id="mockName" class="form-input">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Duration (Minutes)</label>
-                    <input type="number" id="mockDuration" class="form-input" placeholder="Min 18 for Sectional">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Score</label>
-                    <input type="text" id="mockScore" class="form-input" placeholder="e.g. 40/50">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Proof (Screenshot Mandatory)</label>
-                    <input type="file" id="mockProof" class="form-input" accept="image/*">
-                </div>
-                <button class="btn btn-success" onclick="submitMock()">Submit Mock</button>
-            </div>
-        </div>
-    </div>
-
     <script>
-        // ===== CONSTANTS & CONFIG =====
+        // CONFIG & STATE
         const CONFIG = {
-            levels: {
-                E: { min: 1, max: 3, cap: 800, decay: 0, multi: 1.0 },
-                D: { min: 4, max: 5, cap: 1200, decay: 15, multi: 1.1 },
-                C: { min: 6, max: 7, cap: 1500, decay: 30, multi: 1.25 },
-                B: { min: 8, max: 9, cap: 1800, decay: 50, multi: 1.4 },
-                A: { min: 10, max: 11, cap: 2100, decay: 80, multi: 1.6 },
-                S: { min: 12, max: 99, cap: 2500, decay: 120, multi: 1.8 }
-            },
-            failurePenalties: [0, 40, 90, 180, 250],
-            minTime: { study: 10, sectional: 18, full: 60 }
+            minStudy: 10,
+            baseRate: 20, // XP per hour
+            levels: [
+                { r: 'E', multi: 1.0, cap: 800 }, // L1-3
+                { r: 'D', multi: 1.1, cap: 1200 }, // L4-5
+                { r: 'C', multi: 1.25, cap: 1500 }, // L6-7
+                { r: 'B', multi: 1.4, cap: 1800 }, // L8-9
+                { r: 'A', multi: 1.6, cap: 2100 }, // L10-11
+                { r: 'S', multi: 1.8, cap: 2500 }  // L12+
+            ]
         };
 
-        const QUEST_XP = [30, 30, 50, 80, 120, 180, 250]; // Index 0 placeholder, Index 1=L1...
-
-        // ===== STATE =====
-        let state = {
-            exam: 'CGL',
-            xp: 0,
-            level: 1,
-            gold: 0,
-            rank: 'E',
-            weeklyXP: 0,
-            streak: 0,
-            failures: 0, // Consecutive
-            lastActive: null,
-            weekStart: null,
-            dailyQuest: null,
-            dailyQuestDone: false,
-            affirmationsThisWeek: 0,
-            protection: 'none', // none, partial, full
-            history: [],
-            graceUsedMonth: null
+        let state = JSON.parse(localStorage.getItem('ssc_solo_pro')) || {
+            level: 1, xp: 0, gold: 0, weeklyXP: 0, history: [], streak: 0, lastDate: null
         };
 
-        // ===== TEMP VARS =====
-        let timerInterval = null;
-        let sessionStart = null;
-        let currentSession = null;
-        let stream = null;
-        let capturedImage = null;
-        let currentMockType = null;
-        let randomCheckTriggered = false;
-
-        // ===== INITIALIZATION =====
-        function initApp() {
-            const exam = document.getElementById('examSelect').value;
-            state.exam = exam;
-            state.lastActive = new Date().toISOString().split('T')[0];
-            state.weekStart = state.lastActive;
-            generateDailyQuest();
-            saveState();
-            renderApp();
-            document.getElementById('onboarding').classList.add('hidden');
-            document.getElementById('mainApp').classList.remove('hidden');
-        }
-
-        window.onload = function() {
-            const saved = localStorage.getItem('sscSoloState');
-            if(saved) {
-                state = JSON.parse(saved);
-                checkDayChange();
-                document.getElementById('onboarding').classList.add('hidden');
-                document.getElementById('mainApp').classList.remove('hidden');
-                renderApp();
-            }
-        };
+        let activeSession = { startTime: null, timerInterval: null, photo: null };
 
         function saveState() {
-            localStorage.setItem('sscSoloState', JSON.stringify(state));
+            // STORAGE PROTECTION: Limit history to 50 entries to prevent QuotaExceededError
+            if (state.history.length > 50) state.history = state.history.slice(0, 50);
+            localStorage.setItem('ssc_solo_pro', JSON.stringify(state));
+            updateUI();
         }
 
-        // ===== LOGIC ENGINE =====
-        function checkDayChange() {
-            const today = new Date().toISOString().split('T')[0];
-            if(state.lastActive !== today) {
-                // Check missing days
-                const lastDate = new Date(state.lastActive);
-                const currDate = new Date(today);
-                const diffTime = Math.abs(currDate - lastDate);
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-
-                if (diffDays > 1) {
-                    // Missed days logic
-                    // Check Grace (Rank B+ only)
-                    const config = getLevelConfig(state.level);
-                    const canGrace = state.level >= 8; // Rank B starts at 8
-                    const currentMonth = currDate.getMonth();
-                    
-                    if (canGrace && state.graceUsedMonth !== currentMonth) {
-                        state.graceUsedMonth = currentMonth;
-                        showToast("Grace Day Applied! No penalty.", "success");
-                    } else {
-                        applyDailyPenalty(diffDays - 1);
-                    }
-                    state.dailyQuestDone = false;
-                    generateDailyQuest();
-                    
-                    // Reset Protection
-                    state.protection = 'none';
-                }
-                
-                // Weekly Reset
-                const weekStart = new Date(state.weekStart);
-                if ((currDate - weekStart) / (1000*60*60*24) >= 7) {
-                    state.weeklyXP = 0;
-                    state.affirmationsThisWeek = 0;
-                    state.weekStart = today;
-                }
-
-                state.lastActive = today;
-                saveState();
-            }
+        // NAVIGATION
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+            document.getElementById('page' + pageId.charAt(0).toUpperCase() + pageId.slice(1)).classList.remove('hidden');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById('nav-' + pageId).classList.add('active');
         }
 
+        // LEVELING ENGINE
         function getLevelConfig(lvl) {
-            for(let key in CONFIG.levels) {
-                if(lvl >= CONFIG.levels[key].min && lvl <= CONFIG.levels[key].max) {
-                    return { ...CONFIG.levels[key], rank: key };
-                }
-            }
-            return { ...CONFIG.levels.S, rank: 'S' }; // Fallback
+            if (lvl <= 3) return CONFIG.levels[0];
+            if (lvl <= 5) return CONFIG.levels[1];
+            if (lvl <= 7) return CONFIG.levels[2];
+            if (lvl <= 9) return CONFIG.levels[3];
+            if (lvl <= 11) return CONFIG.levels[4];
+            return CONFIG.levels[5];
         }
 
-        function calculateXPForNextLevel(lvl) {
-            // Formula: 100 * 2^(level-2)
-            // L1->L2 (lvl2 target): 100 * 2^0 = 100
-            if (lvl === 1) return 100;
-            return 100 * Math.pow(2, lvl - 1); // Adjusting specifically to start curve
+        function getNextLevelXP(lvl) {
+            return 100 * Math.pow(2, lvl - 1);
         }
 
-        function applyXP(amount, reason) {
-            const cfg = getLevelConfig(state.level);
-            
-            // Check Cap
-            const available = cfg.cap - state.weeklyXP;
-            if (available <= 0 && amount > 0) {
-                showToast("Weekly Cap Reached! No XP earned.", "error");
+        // TIMER LOGIC
+        function startTimer() {
+            const target = document.getElementById('studyTarget').value;
+            if (target < CONFIG.minStudy) {
+                showToast("Min 10 mins required!", "error");
                 return;
             }
-            
-            let finalAmount = Math.min(amount, available);
-            if (amount < 0) finalAmount = amount; // Allow penalties
-
-            state.xp += finalAmount;
-            if(amount > 0) state.weeklyXP += finalAmount;
-            state.xp = Math.max(0, state.xp); // No negative XP
-
-            // Level Up/Down Logic
-            const req = calculateXPForNextLevel(state.level);
-            
-            // Simplified Level Check for this prototype
-            // Typically would need cumulative XP logic, but using simple thresholds here
-            // If XP > threshold -> Lvl Up. 
-            // We will accumulate XP and reset bar for simplicity or keep total.
-            // Let's use Cumulative Total approach implicitly by keeping level hard thresholds
-            // L1:0, L2:100, L3:300, L4:700...
-            
-            let threshold = 0;
-            for(let i=1; i<=state.level; i++) {
-                threshold += calculateXPForNextLevel(i);
-            }
-            
-            if (state.xp >= threshold) {
-                state.level++;
-                showToast(`LEVEL UP! You are now Level ${state.level}`, "success");
-            }
-
-            // Rank Update
-            state.rank = getLevelConfig(state.level).rank;
-            saveState();
-            renderApp();
-        }
-
-        function applyDailyPenalty(daysMissed) {
-            const cfg = getLevelConfig(state.level);
-            
-            // Decay
-            const decay = cfg.decay * daysMissed;
-            if(decay > 0) {
-                state.xp = Math.max(0, state.xp - decay);
-                showToast(`Daily Decay: -${decay} XP`, "error");
-            }
-
-            // Consecutive Failure Penalty
-            state.streak = 0;
-            state.failures += daysMissed;
-            
-            let penIndex = Math.min(state.failures, 4);
-            let penalty = CONFIG.failurePenalties[penIndex];
-            
-            if (penalty > 0) {
-                state.xp = Math.max(0, state.xp - penalty);
-                showToast(`Failure Penalty: -${penalty} XP`, "error");
-            }
-
-            if (state.failures >= 3 && state.level > 1) {
-                state.level--;
-                showToast("CRITICAL FAILURE: LEVEL DOWN", "error");
-            }
-        }
-
-        function generateDailyQuest() {
-            const subjects = ['Quant', 'English', 'Reasoning', 'GA'];
-            const sub = subjects[Math.floor(Math.random() * subjects.length)];
-            state.dailyQuest = `Study ${sub} for 30 mins`;
-        }
-
-        // ===== STUDY FUNCTIONS =====
-        function selectPhase(el, phase) {
-            document.querySelectorAll('.phase-opt').forEach(d => d.classList.remove('selected'));
-            el.classList.add('selected');
-        }
-
-        function startTimer() {
-            const sub = document.getElementById('studySubject').value;
-            const top = document.getElementById('studyTopic').value;
-            const dur = document.getElementById('studyDuration').value;
-            const phaseEl = document.querySelector('.phase-opt.selected');
-
-            if(!top || !dur) { showToast("Fill all fields", "error"); return; }
-            if(dur < CONFIG.minTime.study) { showToast("Minimum 10 mins required", "error"); return; }
-
-            currentSession = {
-                sub, top, expectedDur: parseInt(dur), 
-                phase: phaseEl.innerText.split('\n')[0],
-                rate: parseInt(phaseEl.getAttribute('data-rate')),
-                start: Date.now()
-            };
-
+            activeSession.startTime = Date.now();
             document.getElementById('studyStep1').classList.add('hidden');
             document.getElementById('studyStep2').classList.remove('hidden');
-            document.getElementById('activeTopicDisplay').innerText = `${sub} - ${top}`;
             
-            sessionStart = Date.now();
-            timerInterval = setInterval(() => {
-                const diff = Math.floor((Date.now() - sessionStart)/1000);
-                const m = Math.floor(diff/60).toString().padStart(2,'0');
-                const s = (diff%60).toString().padStart(2,'0');
+            activeSession.timerInterval = setInterval(() => {
+                const diff = Math.floor((Date.now() - activeSession.startTime) / 1000);
+                const m = Math.floor(diff / 60).toString().padStart(2, '0');
+                const s = (diff % 60).toString().padStart(2, '0');
                 document.getElementById('timerDisplay').innerText = `${m}:${s}`;
             }, 1000);
         }
 
         function stopTimer() {
-            clearInterval(timerInterval);
-            const elapsedMins = (Date.now() - sessionStart) / 60000;
-            
-            if (elapsedMins < CONFIG.minTime.study) {
-                showToast("FAILED: Minimum time not met. Penalty applied.", "error");
-                applyDailyPenalty(1);
+            const elapsedMins = (Date.now() - activeSession.startTime) / 60000;
+            if (elapsedMins < CONFIG.minStudy) {
+                showToast("FAILED: Time too short! -40 XP", "error");
+                state.xp = Math.max(0, state.xp - 40);
                 resetStudy();
+                saveState();
                 return;
             }
-
-            currentSession.actualDur = elapsedMins;
+            clearInterval(activeSession.timerInterval);
             document.getElementById('studyStep2').classList.add('hidden');
             document.getElementById('studyStep3').classList.remove('hidden');
-            
-            // Random Prompt Logic (15% chance)
-            if (Math.random() < 0.15) {
-                randomCheckTriggered = true;
-                document.getElementById('randomPromptOverlay').style.display = 'flex';
-            } else {
-                randomCheckTriggered = false;
-                document.getElementById('randomPromptOverlay').style.display = 'none';
-            }
-            
             initCamera();
         }
 
+        // CAMERA & STORAGE SAVER
         async function initCamera() {
             try {
-                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-                document.getElementById('cameraFeed').srcObject = stream;
-            } catch(e) {
-                showToast("Camera failed. Use Fallback.", "error");
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                document.getElementById('video').srcObject = stream;
+            } catch (e) {
+                showToast("Camera access denied", "error");
             }
         }
 
-        function capturePhoto() {
-            const video = document.getElementById('cameraFeed');
+        
+        function takePhoto() {
+            const video = document.getElementById('video');
             const canvas = document.createElement('canvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0);
-            capturedImage = canvas.toDataURL('image/jpeg');
             
-            document.getElementById('photoPreview').src = capturedImage;
+            // STORAGE PROTECTION: Force low resolution (320px wide)
+            const scale = 320 / video.videoWidth;
+            canvas.width = 320;
+            canvas.height = video.videoHeight * scale;
+            
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // STORAGE PROTECTION: Use JPEG with 0.5 quality (Very small file size)
+            const compressedData = canvas.toDataURL('image/jpeg', 0.5);
+            
+            activeSession.photo = compressedData;
+            document.getElementById('photoPreview').src = compressedData;
             document.getElementById('photoPreview').classList.remove('hidden');
             video.classList.add('hidden');
-            document.getElementById('captureBtn').classList.add('hidden');
-            document.getElementById('retakeBtn').classList.remove('hidden');
-            
-            // Stop stream
-            stream.getTracks().forEach(t => t.stop());
+            document.getElementById('captureBtn').innerText = "Retake Photo";
         }
 
-        function retakePhoto() {
-            capturedImage = null;
-            document.getElementById('photoPreview').classList.add('hidden');
-            document.getElementById('cameraFeed').classList.remove('hidden');
-            document.getElementById('captureBtn').classList.remove('hidden');
-            document.getElementById('retakeBtn').classList.add('hidden');
-            initCamera();
-        }
+        function submitVerification() {
+            const note = document.getElementById('studyNote').value;
+            if (!activeSession.photo) return showToast("Photo required!", "error");
+            if (note.length < 20) return showToast("Summary too short!", "error");
 
-        function toggleAffirmation() {
-            document.getElementById('cameraSection').classList.add('hidden');
-            document.getElementById('affirmationSection').classList.remove('hidden');
-        }
-
-        // Character count for affirmation
-        document.getElementById('affirmationText').addEventListener('input', function() {
-            document.getElementById('charCount').innerText = this.value.length;
-        });
-
-        function submitSession() {
-            const notes = document.getElementById('studyNotes').value;
-            const reflection = document.getElementById('studyReflection').value;
-            const affirmation = document.getElementById('affirmationText').value;
+            const elapsedMins = (Date.now() - activeSession.startTime) / 60000;
+            const config = getLevelConfig(state.level);
             
-            // Validation
-            if (!notes || !reflection) { showToast("Notes & Reflection required", "error"); return; }
-            
-            let isAffirmation = !document.getElementById('cameraSection').classList.contains('hidden') ? false : true;
+            // Formula: (mins/60) * 20 * multiplier
+            const earnedXP = Math.floor((elapsedMins / 60) * CONFIG.baseRate * config.multi);
+            const earnedGold = Math.floor(earnedXP / 4);
 
-            if (isAffirmation) {
-                if (affirmation.length < 50) { showToast("Affirmation too short (min 50 chars)", "error"); return; }
-                if (state.affirmationsThisWeek >= 3) {
-                    showToast("FAILED: Max affirmations (3/week) exceeded.", "error");
-                    applyDailyPenalty(1);
-                    resetStudy();
-                    return;
-                }
-                state.affirmationsThisWeek++;
-            } else {
-                if (!capturedImage) { showToast("Photo required", "error"); return; }
-            }
-
-            // Calculation
-            const cfg = getLevelConfig(state.level);
-            // XP = (Mins / 60) * Rate * Multiplier
-            let rawXP = (currentSession.actualDur / 60) * currentSession.rate * cfg.multi;
-            let earnedXP = Math.floor(rawXP);
-            let earnedGold = Math.floor(earnedXP / 4);
-
-            if (isAffirmation) earnedGold = Math.floor(earnedGold / 2); // Penalty
-
-            // Check Daily Quest
-            if (!state.dailyQuestDone && state.dailyQuest.includes(currentSession.sub) && currentSession.actualDur >= 30) {
-                const qReward = QUEST_XP[Math.min(state.level, 6)];
-                earnedXP += qReward;
-                state.dailyQuestDone = true;
-                showToast(`Daily Quest Complete! +${qReward} XP`, "success");
-            }
-
-            applyXP(earnedXP, "Study");
+            state.xp += earnedXP;
             state.gold += earnedGold;
-            state.streak++;
-            state.failures = 0; // Reset consecutive failures
+            state.weeklyXP += earnedXP;
+            
+            // Level Up logic
+            let nextXP = getNextLevelXP(state.level);
+            if (state.xp >= nextXP) {
+                state.xp -= nextXP;
+                state.level++;
+                showToast("LEVEL UP! YOU ARE STRONGER.", "success");
+            }
 
-            // Log
             state.history.unshift({
-                date: new Date().toISOString(),
-                type: 'Study',
-                detail: `${currentSession.sub} - ${currentSession.top}`,
+                date: new Date().toLocaleDateString(),
+                sub: document.getElementById('studySubject').value,
                 xp: earnedXP,
-                proof: isAffirmation ? 'Affirmation' : 'Photo'
+                mins: Math.floor(elapsedMins)
             });
 
             showToast(`+${earnedXP} XP | +${earnedGold} Gold`, "success");
             resetStudy();
-            navTo('dashboard');
+            saveState();
+            showPage('dashboard');
         }
 
         function resetStudy() {
-            currentSession = null;
-            capturedImage = null;
-            document.getElementById('studyStep3').classList.add('hidden');
+            clearInterval(activeSession.timerInterval);
+            activeSession = { startTime: null, timerInterval: null, photo: null };
             document.getElementById('studyStep1').classList.remove('hidden');
-            document.getElementById('studyNotes').value = "";
-            document.getElementById('studyReflection').value = "";
-            document.getElementById('affirmationText').value = "";
+            document.getElementById('studyStep2').classList.add('hidden');
+            document.getElementById('studyStep3').classList.add('hidden');
+            document.getElementById('video').classList.remove('hidden');
             document.getElementById('photoPreview').classList.add('hidden');
-            document.getElementById('cameraFeed').classList.remove('hidden');
-            document.getElementById('cameraSection').classList.remove('hidden');
-            document.getElementById('affirmationSection').classList.add('hidden');
-            document.getElementById('captureBtn').classList.remove('hidden');
-            document.getElementById('retakeBtn').classList.add('hidden');
-            renderApp();
+            document.getElementById('studyNote').value = "";
+            document.getElementById('captureBtn').innerText = "📸 Take Photo of Notes";
         }
 
-        // ===== MOCK FUNCTIONS =====
-        function openMockModal(type) {
-            currentMockType = type;
-            document.getElementById('mockModalTitle').innerText = `Log ${type} Mock`;
-            document.getElementById('mockModal').classList.add('active');
-        }
+        // UI RENDERING
+        function updateUI() {
+            const config = getLevelConfig(state.level);
+            const nextXP = getNextLevelXP(state.level);
 
-        function closeModal(id) {
-            document.getElementById(id).classList.remove('active');
-        }
-
-        function submitMock() {
-            const name = document.getElementById('mockName').value;
-            const dur = parseInt(document.getElementById('mockDuration').value);
-            const score = document.getElementById('mockScore').value;
-            const proof = document.getElementById('mockProof').files[0];
-
-            // Validation
-            if (!name || !dur || !score) { showToast("All fields required", "error"); return; }
-            if (!proof) { showToast("Screenshot Mandatory!", "error"); return; }
-            
-            // Min Time Check
-            const min = currentMockType === 'Sectional' ? CONFIG.minTime.sectional : CONFIG.minTime.full;
-            if (dur < min) {
-                showToast(`FAILED: Minimum ${min} mins required`, "error");
-                applyDailyPenalty(1);
-                closeModal('mockModal');
-                return;
-            }
-
-            // Rewards
-            const cfg = getLevelConfig(state.level);
-            const baseRate = currentMockType === 'Sectional' ? 30 : 75; // Flat bonus for mocks roughly
-            // XP = (Dur/60 * 30) for sectional usually, or fixed bonus.
-            // Let's use Prompt Rule: Sectional 30 XP * Multi, Full 75 XP * Multi
-            let earnedXP = Math.floor(baseRate * cfg.multi);
-            let earnedGold = Math.floor(earnedXP / 3);
-
-            // Protection
-            if (currentMockType === 'Full') state.protection = 'full';
-            else if (state.protection === 'none') state.protection = 'partial';
-
-            applyXP(earnedXP, "Mock");
-            state.gold += earnedGold;
-
-            state.history.unshift({
-                date: new Date().toISOString(),
-                type: 'Mock',
-                detail: `${currentMockType}: ${name} (${score})`,
-                xp: earnedXP,
-                proof: 'Screenshot'
-            });
-
-            closeModal('mockModal');
-            showToast(`Mock Logged! +${earnedXP} XP`, "success");
-            renderApp();
-        }
-
-        // ===== UI RENDERING =====
-        function navTo(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('page' + pageId.charAt(0).toUpperCase() + pageId.slice(1)).classList.add('active');
-            
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById('nav-' + pageId).classList.add('active');
-        }
-
-        function renderApp() {
-            // Header
-            document.getElementById('headerExam').innerText = state.exam;
-            document.getElementById('headerXP').innerText = `${state.xp} XP`;
-            document.getElementById('headerGold').innerText = `${state.gold} G`;
-
-            // Dashboard
-            const cfg = getLevelConfig(state.level);
-            document.getElementById('dashRank').innerText = state.rank;
             document.getElementById('dashLevel').innerText = `Level ${state.level}`;
-            document.getElementById('dashTitle').innerText = getRankTitle(state.rank);
-            document.getElementById('dashWeeklyXP').innerText = `${state.weeklyXP} / ${cfg.cap}`;
-            document.getElementById('dashStreak').innerText = `${state.streak} Days`;
-            document.getElementById('dashFailures').innerText = state.failures;
-            
-            // Status Logic
-            let status = "Normal";
-            if (state.protection === 'full') status = "🛡️ Protected";
-            else if (state.protection === 'partial') status = "🔰 Partial";
-            else if (state.failures > 0) status = "⚠️ Danger";
-            document.getElementById('dashStatus').innerText = status;
+            document.getElementById('dashRank').innerText = config.r;
+            document.getElementById('dashGold').innerText = state.gold;
+            document.getElementById('dashWeeklyXP').innerText = `Weekly: ${state.weeklyXP} / ${config.cap}`;
+            document.getElementById('xpText').innerText = `${Math.floor(state.xp)} / ${nextXP}`;
+            document.getElementById('xpBar').style.width = (state.xp / nextXP * 100) + '%';
 
-            // XP Bar
-            // Calculate relative progress for bar
-            // Since we don't have cumulative totals, we just visualize somewhat arbitrarily or based on next level delta
-            // Using 0 to Next Level Delta for visualization
-            const xpNeeded = calculateXPForNextLevel(state.level); // This is approximate delta
-            // A proper RPG bar needs (CurrentXP - PreviousLevelTotal) / (NextLevelTotal - PreviousLevelTotal)
-            // Simplified: Just use total XP % threshold logic or similar? 
-            // Let's stick to simple "XP / Threshold" visualization even if numbers get big
-            // Actually, let's visualize progress towards next level threshold accumulation
-            
-            let prevThreshold = 0;
-            for(let i=1; i<state.level; i++) prevThreshold += calculateXPForNextLevel(i);
-            let nextThreshold = prevThreshold + calculateXPForNextLevel(state.level);
-            
-            let currentProgress = state.xp - prevThreshold;
-            let levelDelta = nextThreshold - prevThreshold;
-            
-            // Clamp for safety if logic drifts
-            if(currentProgress < 0) currentProgress = 0;
-            
-            document.getElementById('xpText').innerText = `${Math.floor(currentProgress)} / ${Math.floor(levelDelta)}`;
-            document.getElementById('xpBar').style.width = `${Math.min(100, (currentProgress/levelDelta)*100)}%`;
-
-            // Daily Quest
-            document.getElementById('dailyQuestText').innerText = state.dailyQuestDone ? "COMPLETED" : state.dailyQuest;
-            document.getElementById('dailyQuestText').style.color = state.dailyQuestDone ? "var(--accent-green)" : "var(--text-primary)";
-
-            // Profile
-            document.getElementById('profileXP').innerText = state.xp;
-            document.getElementById('profileLevel').innerText = state.level;
-            document.getElementById('profileRank').innerText = state.rank;
-            document.getElementById('profileCap').innerText = cfg.cap;
-            document.getElementById('profileMulti').innerText = cfg.multi + "x";
-
-            // History Log
-            const logHTML = state.history.map(h => `
-                <div class="card" style="padding: 10px; margin-bottom: 8px;">
-                    <div class="flex" style="justify-content: space-between;">
-                        <span class="font-bold text-sm">${h.type}</span>
-                        <span class="xp-color text-xs">+${h.xp} XP</span>
+            // Profile Log
+            document.getElementById('historyLog').innerHTML = state.history.map(h => `
+                <div class="card" style="padding:10px; font-size:0.8rem; margin-bottom:8px;">
+                    <div style="display:flex; justify-content:space-between; font-weight:bold;">
+                        <span>${h.sub}</span>
+                        <span style="color:var(--accent-blue)">+${h.xp} XP</span>
                     </div>
-                    <div class="text-xs text-muted">${h.detail}</div>
-                    <div class="text-xs text-muted" style="margin-top:4px;">${new Date(h.date).toLocaleDateString()} • ${h.proof}</div>
+                    <div style="color:var(--text-secondary)">${h.date} • ${h.mins} mins</div>
                 </div>
             `).join('');
-            document.getElementById('sessionLog').innerHTML = logHTML || '<div class="text-center text-muted text-xs">No records yet.</div>';
-            
-            // Mock History
-            const mockHTML = state.history.filter(h => h.type === 'Mock').map(h => `
-                 <div class="card" style="padding: 10px; margin-bottom: 8px;">
-                    <div class="flex" style="justify-content: space-between;">
-                        <span class="font-bold text-sm">Mock</span>
-                        <span class="xp-color text-xs">+${h.xp} XP</span>
-                    </div>
-                    <div class="text-xs text-muted">${h.detail}</div>
-                </div>
-            `).join('');
-            document.getElementById('mockHistoryList').innerHTML = mockHTML || '<div class="text-center text-muted text-xs">No mocks logged.</div>';
-        }
-
-        function getRankTitle(rank) {
-            const titles = { 'E': 'Novice', 'D': 'Rookie', 'C': 'Regular', 'B': 'Veteran', 'A': 'Elite', 'S': 'Monarch' };
-            return titles[rank] || 'Unknown';
         }
 
         function showToast(msg, type) {
             const t = document.getElementById('toast');
             t.innerText = msg;
-            t.className = `toast ${type} visible`;
-            setTimeout(() => t.classList.remove('visible'), 3000);
+            t.style.borderColor = type === 'error' ? 'var(--accent-red)' : 'var(--accent-green)';
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
         }
 
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href",     dataStr);
+            downloadAnchorNode.setAttribute("download", "ssc_solo_backup.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+
+        // INIT
+        updateUI();
     </script>
 </body>
 </html>
